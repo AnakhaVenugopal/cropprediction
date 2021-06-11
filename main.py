@@ -27,7 +27,7 @@ def nameroute():
     # create variables to store and display data
     print("!@#", api_data)
     if api_data['cod']=='404':
-        return 'Invalid district!!'
+        return 'Invalid District!!'
     else:
         temp = ((api_data['main']['temp']) - 273.15)
         print(temp, "is ")
