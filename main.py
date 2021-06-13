@@ -33,7 +33,7 @@ def nameroute():
         print(temp, "is ")
         humid = api_data['main']['humidity']
         wind = api_data['wind']['speed']
-        rain = api_data['clouds']['all']
+        rain = api_data['rain']['1h']
         df = pd.read_csv("cropsetss")
         df.head()
         features = df[['Rainfall', 'Temperature', 'Humidity', 'Windspeed']]
@@ -47,7 +47,12 @@ def nameroute():
         #x = metrics.accuracy_score(y_test, predicted_values)
         df = np.array([[temp, humid, rain, wind]])
         prediction = RF.predict(df)
+        cropname=''.join(prediction)
         # print(prediction)
+        sug=pd.read_csv("suggestedcrop",index_col='Crop')
+        scrop=sug.loc[cropname]
+        set=scrop.Suggested
+        print(set)
         new = pd.read_csv("cropandprodctns", index_col='Crop')
         pg = new.loc[prediction]
         n = pg.Production
@@ -55,7 +60,7 @@ def nameroute():
         if area > 0:
             crop_yield = production / area
             print("::::::", prediction, crop_yield)
-            return jsonify({'response': str(''.join(prediction)), 'production': str(crop_yield), })
+            return jsonify({'CropName': str(cropname), 'CropYield': str(round(crop_yield,6)), 'Suggestedcrops':set,'Temperature':temp,'Humidity':humid,'Rainfall':rain,'Windspeed':wind})
         # print(crop_yield)
         else:
             return "Some value is missing"
