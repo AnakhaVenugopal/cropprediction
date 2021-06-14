@@ -33,7 +33,7 @@ def nameroute():
         print(temp, "is ")
         humid = api_data['main']['humidity']
         wind = api_data['wind']['speed']
-        rain = api_data['rain']['1h']
+        rain = api_data['clouds']['all']
         df = pd.read_csv("cropsetss")
         df.head()
         features = df[['Rainfall', 'Temperature', 'Humidity', 'Windspeed']]
